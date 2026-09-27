@@ -7,7 +7,7 @@ energy_jars = {
     "high": [],
 }
 
-def pull_idea(energy_jars, energy_level):
+def pull_idea(energy_jars: dict, energy_level):
     if energy_level in energy_jars:
         content = energy_jars[energy_level]
         if content:
@@ -17,5 +17,14 @@ def pull_idea(energy_jars, energy_level):
     else:
         print ("Error, invalid energy level")
 
+def add_idea(energy_jars: dict, energy_level, task_description):
+    if energy_level in energy_jars:
+        content = energy_jars[energy_level]
+        content.append(task_description)
+        print (energy_jars[energy_level])
+    else:
+        print ("Error, invalid energy level")
 
-pull_idea(energy_jars, "ok")
+pull_idea(energy_jars, "high")
+add_idea(energy_jars, "high", "Solve world hunger")
+pull_idea(energy_jars, "high")
