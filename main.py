@@ -2,7 +2,9 @@ import random
 import json
 import os
 
-
+# Template for new files
+# low, medium, and high can be adjusted
+## in_process is built into functions, be sure to rename all instances
 energy_jars = {
     "low": [],
     "medium": [],
@@ -10,27 +12,7 @@ energy_jars = {
     "in_process": [],
 }
 
-def pull_idea(energy_jars: dict, energy_level):
-    if energy_level in energy_jars:
-        content = energy_jars[energy_level]
-        if content:
-            return (random.choice(content))
-        else:
-            print ("\nError, please add an idea\n")
-    else:
-        print ("\nError, invalid energy level\n")
-
-def ask_yes_no(prompt: str) -> bool:
-    #Helper to keep asking until the user answers yes or no.
-    while True:
-        answer = input(f"{prompt} (yes/no): ").strip().lower()
-        if answer in ("yes", "y"):
-            return True
-        if answer in ("no", "n"):
-            return False
-        print("Invalid response, please type 'yes' or 'no'.")
-
-
+# The main flow for "pull"
 def handle_pull_workflow(loaded_jars: dict, filename: str):
     energy_level = input("\nWhat is your energy level?\n").strip().lower()
     
@@ -55,13 +37,35 @@ def handle_pull_workflow(loaded_jars: dict, filename: str):
 
     if ask_yes_no("Have you started?"):
         if energy_level == "in_process":
-            print(f"\nThe idea '{idea}' has been stored for later.\n")
+            print(f"\nThe idea '{idea}' has been stored for later.\n") # 
         else:
             store_idea(loaded_jars, idea, energy_level, filename)
             print(f"\nThe idea '{idea}' has been stored for later.\n")
     else:
         print("\nNo worries!\n")
 
+# Return and print a random idea from the given "energy level"
+def pull_idea(energy_jars: dict, energy_level):
+    if energy_level in energy_jars:
+        content = energy_jars[energy_level]
+        if content:
+            return (random.choice(content))
+        else:
+            print ("\nError, please add an idea\n")
+    else:
+        print ("\nError, invalid energy level\n")
+
+def ask_yes_no(prompt: str) -> bool:
+    # Helper to keep asking until the user answers yes or no.
+    while True:
+        answer = input(f"{prompt} (yes/no): ").strip().lower()
+        if answer in ("yes", "y"):
+            return True
+        if answer in ("no", "n"):
+            return False
+        print("Invalid response, please type 'yes' or 'no'.")
+
+# Add or remove ideas from the given "energy level"
 def edit_ideas(energy_jars: dict, choice, filename):
     unfiltered_level = input("\nWhat energy level is your idea in?: ")
     energy_level = unfiltered_level.lower()
@@ -79,6 +83,7 @@ def edit_ideas(energy_jars: dict, choice, filename):
     else:
         print ("\nError, invalid energy level\n")
 
+# Helper function for adding ideas to the given "energy level"
 def add_idea(energy_jars: dict, energy_level, task_description, filename):
     if energy_level in energy_jars:
         if task_description in energy_jars[energy_level]:
@@ -91,6 +96,7 @@ def add_idea(energy_jars: dict, energy_level, task_description, filename):
     else:
         print ("\nError, invalid energy level\n")
 
+# Helper function for aremoving ideas from the given "energy level"
 def remove_idea(energy_jars, energy_level, idea, filename):
     if energy_level in energy_jars:
         if idea in energy_jars[energy_level]:
@@ -155,7 +161,6 @@ def remove_jar(energy_jars: dict, energy_level, filename):
             print(f"\nSuccess! Jar {energy_level} has been removed!\n")
     else:
         print (f"\nError: The jar {energy_level} does not exist.\n")
-
 
 def save_jars(energy_jars: dict, filename):
     with open(filename, 'w') as f:
